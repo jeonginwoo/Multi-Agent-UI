@@ -24,7 +24,9 @@ export default function BoardCreate() {
             return;
         }
 
-        router.push("/board/list");
+        const data = await res.json();
+        // 생성된 게시글 ID로 상세 페이지로 이동
+        router.push(`/board/${data.id}`);
     }
 
     return (
@@ -34,6 +36,7 @@ export default function BoardCreate() {
             <input
                 className="border p-2 w-full mb-3"
                 placeholder="제목"
+                value={title}
                 onChange={(e) => setTitle(e.target.value)}
             />
 
@@ -41,6 +44,7 @@ export default function BoardCreate() {
                 className="border p-2 w-full mb-3"
                 placeholder="내용"
                 rows={6}
+                value={content}
                 onChange={(e) => setContent(e.target.value)}
             />
 

@@ -52,7 +52,7 @@ export default function BoardDetailClient() {
                 const errData = await res.json();
                 throw new Error(errData.error || `Delete failed: ${res.status}`);
             }
-            router.push("/board");
+            router.push("/board/list");
         } catch (err: any) {
             console.error(err);
             alert("삭제에 실패했습니다: " + err.message);
@@ -84,17 +84,12 @@ export default function BoardDetailClient() {
                 </button>
 
                 <button
-                    onClick={() => {
-                        if (window.history.length > 1) {
-                            router.back();
-                        } else {
-                            router.push("/board");
-                        }
-                    }}
+                    onClick={() => router.push("/board/list")}
                     className="bg-green-500 text-white px-3 py-1 rounded"
                 >
                     뒤로가기
                 </button>
+
             </div>
         </div>
     );

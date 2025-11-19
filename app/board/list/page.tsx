@@ -6,7 +6,8 @@ import Link from "next/link";
 interface Board {
     id: number;
     title: string;
-    author_id: string;
+    content: string;
+    author_nickname: string;
     created_at: string; // ISO 문자열
 }
 
@@ -31,6 +32,7 @@ export default function BoardList() {
                 return;
             }
             const data = await res.json();
+            console.log("Fetched board list:", data); // 디버깅용
             setBoards(data.boards);
             setTotal(data.total);
         } catch (err) {
@@ -76,13 +78,16 @@ export default function BoardList() {
                     <tbody>
                     {boards.map((b, idx) => (
                         <tr key={b.id} className="hover:bg-gray-50">
-                            <td className="p-2 border-b">{(page - 1) * size + idx + 1}</td>
+                            <td className="p-2 border-b">{b.id}</td>
                             <td className="p-2 border-b">
-                                <Link href={`/board/${b.id}`} className="text-blue-500 hover:underline">
+                                <Link
+                                    href={`/board/${b.id}`}
+                                    className="text-blue-500 hover:underline"
+                                >
                                     {b.title}
                                 </Link>
                             </td>
-                            <td className="p-2 border-b">{b.author_id}</td>
+                            <td className="p-2 border-b">{b.author_nickname}</td>
                             <td className="p-2 border-b">
                                 {new Date(b.created_at).toLocaleString()}
                             </td>
