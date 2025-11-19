@@ -33,6 +33,20 @@ export default function DocumentListPage() {
         }
     };
 
+    const handleAnalyze = async (id: number) => {
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/documents/analyze/${id}`, {
+                method: "POST",
+                credentials: "include",
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.detail || "분석 실패");
+            alert("분석 시작됨!");
+        } catch (e: any) {
+            alert(`분석 실패: ${e.message}`);
+        }
+    };
+
     useEffect(() => {
         fetchDocuments();
     }, []);
@@ -67,6 +81,13 @@ export default function DocumentListPage() {
                             >
                                 열기
                             </a>
+                            {/* 분석 버튼 추가 */}
+                            <button
+                                onClick={() => handleAnalyze(doc.id)}
+                                className="mt-2 bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
+                            >
+                                분석
+                            </button>
                             <p className="mt-auto text-gray-400 text-sm">Uploader ID: {doc.uploader_id}</p>
                         </div>
                     );
