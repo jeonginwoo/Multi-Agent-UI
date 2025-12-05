@@ -43,21 +43,20 @@ jobs:
     runs-on: [self-hosted, multi-agent-ui]
 
     steps:
+      - name: GHCR Login
+        run: echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+    
       - name: Pull latest image
         run: docker pull ghcr.io/${{ secrets.REPO_USER }}/multi-agent-ui:latest
 
       - name: Stop old container
         run: |
-          docker stop multi-agent-ui || true
-          docker rm multi-agent-ui || true
+          docker image prune -f
+          docker logout
 
-      - name: Run new container
+      - name: Run container
         run: |
-          docker run -d \
-            --name multi-agent-ui \
-            -p 37123:3000 \
-            --env-file /home/ec2-user/multi-agent-ui/Multi-Agent-UI/.env \
-            ghcr.io/${{ secrets.REPO_USER }}/multi-agent-ui:latest
+          docker-compose up -d
 
       - name: Health check
         run: |
