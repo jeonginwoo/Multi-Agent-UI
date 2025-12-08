@@ -46,7 +46,7 @@ export default function DocumentListPage() {
     };
 
     const handleAnalyze = async (doc: DocumentMeta) => {
-        const s3Url = `https://s3-eddi-lsh-bucket.s3.ap-northeast-2.amazonaws.com/${doc.s3_key}`;
+        const s3Url = `https://${process.env.AWS_S3_BUCKET}.s3.ap-northeast-2.amazonaws.com/${doc.s3_key}`;
         setAnalyzingId(doc.id);
         try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/documents-multi-agents/analyze`, {
